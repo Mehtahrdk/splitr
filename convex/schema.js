@@ -1,13 +1,50 @@
-import {defineSchema,defineTable } from "convex/sever";
-import { V } from "convex/values";
+import { defineSchema, defineTable } from "convex/server";
+import { v } from "convex/values";
 
 export default defineSchema({
+  users: defineTable({
+    name: v.string(),
+    email: v.optional(v.string()),
+    tokenIdentifier: v.string(),
+    imageUrl: v.optional(v.string()),
+  })
+    .index("by_token", ["tokenIdentifier"])
+    .index("by_email", ["email"])
+    .searchIndex("search_name", { searchField: "name" })
+    .searchIndex("search_email", { searchField: "email" }),
 
-    users:defineTable({
-        name:V.string(),
-        email:V.string(),
-        tokeIdentifier:V.string(),
-        imageUrl:V.optional(V.string())
+    expenses:defineTable({
+      descriptiton:v.string(),
+      amount:v.number(),
+      category:v.optional(v.string()),
+      date: v.number(),
+      paidByUserId: v.id("users"),
+      splitType:v.string(),
+      splits:v.array(
+        v.object({
+          userId:v.id("users"),
+          amount:v.number(),
+          paid:v.boolean()
+        })
+      ),
+      groupId:v.optional(v.id("groups")),
+      createdBy:v.id("users")
+    })
+    .index("by_group",["groupId"])
+    .index("by_user_and_group",["paidByuserId","groupId"])
+    .index("by_date",["date"]),
 
-    }),
-})
+
+    groups:defineTable({
+      name:v.string(),
+      description:v.optional(v.string()),
+      createdBy:v.id("users"),
+      members:v.array(
+        v.object({
+          userId:v.id("users"),
+          role:v.string(),
+          joinedAt:v.number(),
+        })
+      ),
+    })
+});

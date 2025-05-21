@@ -7,14 +7,6 @@ import "./globals.css";
 import Header from "@/components/header";
 import { ConvexClientProvider } from "@/components/convex-client-provider";
 import { ClerkProvider } from "@clerk/nextjs";
-// import {
-//   ClerkProvider,
-//   SignInButton,
-//   SignUpButton,
-//   SignedIn,
-//   SignedOut,
-//   UserButton,
-// } from '@clerk/nextjs'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
