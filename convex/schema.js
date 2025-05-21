@@ -9,5 +9,5 @@ export default defineSchema({
         tokeIdentifier:V.string(),
         imageUrl:V.optional(V.string())
 
-    })
+    }),
 })
